@@ -1,1 +1,9 @@
-<paste log output from Kubernetes-mediated prediction, here>
+deployment.apps/python-prediction-app created
+NAME                                     READY   STATUS              RESTARTS   AGE
+python-prediction-app-68cb44d595-cx7cl   0/1     ContainerCreating   0          0s
+Waiting for deployment "python-prediction-app" rollout to finish: 0 of 1 updated replicas are available...
+deployment "python-prediction-app" successfully rolled out
+NAME                                     READY   STATUS    RESTARTS   AGE
+python-prediction-app-68cb44d595-cx7cl   1/1     Running   0          2s
+Forwarding from 0.0.0.0:8000 -> 80
+Handling connection for 8000
