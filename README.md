@@ -48,3 +48,16 @@ source .devops/bin/activate
 * Setup and Configure Kubernetes locally
 * Create Flask app in Container
 * Run via kubectl
+
+### File explaination
+* `.circleci/config.yaml`: includes configuration for CI pipeline
+* `output_txt_files/docker_out.txt`: Outputs text recorded when run `./run_docker.sh`
+* `output_txt_files/kubernetes_out.txt`: Outputs text recorded when run `./run_kubernetes.sh`
+* `app.py`: includes Python code for prediction application
+* `Dockerfile`: includes all commands a user could call on the command line to assemble an image
+* `make_predictions.sh`: script to make request to prediction app and get prediction value
+* `Makefile`: defines set of tasks to be executed
+* `requirements.txt`: includes Python libraries required for prediction app
+* `run_docker.sh`: bash script to run python prediction app in docker container
+* `run_kubernetes.sh`: bash script to deploy python prediction app in kubernetes cluster
+* `upload_docker.sh`:  bash script to upload python prediction app image to Docker Hub
