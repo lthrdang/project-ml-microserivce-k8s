@@ -57,8 +57,6 @@ source .devops/bin/activate
 
 #### Setup and Configure Docker locally
 
-To setup and configure Docker locally in linux, run this command:
-
 Install docker:
 
 ```bash
