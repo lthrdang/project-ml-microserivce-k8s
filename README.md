@@ -1,14 +1,17 @@
+# Python Prediction App in Kubernetes
+
 [![CircleCI](https://circleci.com/gh/lthrdang/project-ml-microserivce-k8s/tree/main.svg?style=svg)](https://circleci.com/gh/lthrdang/project-ml-microserivce-k8s/tree/main)
 
 ## Project Overview
 
-In this project, you will apply the skills you have acquired in this course to operationalize a Machine Learning Microservice API. 
+This project is a sample for operationalize a Machine Learning Microservice API in local, Docker container, or Kubernetes cluster. It contains a Python flask app—in a provided file, `app.py`—that serves out predictions (inference) about housing prices through API calls. This project could be extended to any pre-trained machine learning model, such as those for image recognition and data labeling.
 
-You are given a pre-trained, `sklearn` model that has been trained to predict housing prices in Boston according to several features, such as average rooms in a home and data about highway access, teacher-to-pupil ratios, and so on. You can read more about the data, which was initially taken from Kaggle, on [the data source site](https://www.kaggle.com/c/boston-housing). This project tests your ability to operationalize a Python flask app—in a provided file, `app.py`—that serves out predictions (inference) about housing prices through API calls. This project could be extended to any pre-trained machine learning model, such as those for image recognition and data labeling.
+It included all neccesary parts and ready for deployment by below instruction:
 
 ### Project Tasks
 
 Your project goal is to operationalize this working, machine learning microservice using [kubernetes](https://kubernetes.io/), which is an open-source system for automating the management of containerized applications. In this project you will:
+
 * Test your project code using linting
 * Complete a Dockerfile to containerize this application
 * Deploy your containerized application using Docker and make a prediction
@@ -23,9 +26,16 @@ You can find a detailed [project rubric, here](https://review.udacity.com/#!/rub
 
 ---
 
+## Prerequisites
+
+* Linux machine (Ubuntu/Debian)
+* Python 3.7
+* Docker Hub account
+
 ## Setup the Environment
 
-* Create a virtualenv with Python 3.7 and activate it. Refer to this link for help on specifying the Python version in the virtualenv. 
+* Create a virtualenv with Python 3.7 and activate it. Refer to this link for help on specifying the Python version in the virtualenv.
+
 ```bash
 python3 -m pip install --user virtualenv
 # You should have Python 3.7 available in your host. 
@@ -34,6 +44,7 @@ python3 -m pip install --user virtualenv
 python3 -m virtualenv --python=<path-to-Python3.7> .devops
 source .devops/bin/activate
 ```
+
 * Run `make install` to install the necessary dependencies
 
 ### Running `app.py`
@@ -44,12 +55,81 @@ source .devops/bin/activate
 
 ### Kubernetes Steps
 
-* Setup and Configure Docker locally
-* Setup and Configure Kubernetes locally
-* Create Flask app in Container
-* Run via kubectl
+#### Setup and Configure Docker locally
+
+To setup and configure Docker locally in linux, run this command:
+
+Install docker:
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+Configure docker:
+
+```bash
+# To run docker command without sudo
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+#### Setup and Configure Kubernetes locally
+
+To setup and configure Kubernetes locally in Linux, run this commands:
+
+```bash
+# Install kubectl
+sudo snap install kubectl --classic
+kubectl version --client
+
+# Install minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# Setup kubernetes cluster
+minikube start
+```
+
+#### Create Flask app in Container
+
+Build docker image to run Flask app in
+
+```bash
+docker build -t python-prediction-app:latest .
+docker tag python-prediction-app:latest <your-dockerhub-id>/python-prediction-app:v1.0.0
+
+docker images
+```
+
+Login with docker use your Docker Hub account
+
+```bash
+docker login
+```
+
+Push Falsk app image to Docker Hub
+
+```bash
+docker push <your-dockerhub-id>/python-prediction-app:v1.0.0
+```
+
+#### Run via kubectl
+
+Create deployment
+
+```bash
+kubectl create deploy python-prediction-app --image=<your-dockerhub-id>/python-prediction-app:v1.0.0
+```
+
+Check pod of your deployment is running without errors
+
+```bash
+kubectl get pods
+```
 
 ### File explaination
+
 * `.circleci/config.yaml`: includes configuration for CI pipeline
 * `output_txt_files/docker_out.txt`: Outputs text recorded when run `./run_docker.sh`
 * `output_txt_files/kubernetes_out.txt`: Outputs text recorded when run `./run_kubernetes.sh`
